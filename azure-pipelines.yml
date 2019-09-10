@@ -55,7 +55,7 @@ steps:
       eq(variables['System.PullRequest.TargetBranch'], 'master')
     )
 
-=======
+=====
 <<<<< unit-tests
 >>>>> master
 - task: DotNetCoreCLI@2
