@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+<<<<< security-scan
 using System.IO;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -7,6 +8,15 @@ using NUnit.Framework;
 using TailSpin.SpaceGame.Web;
 using TailSpin.SpaceGame.Web.Models;
 
+=======
+using System.IO;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using TailSpin.SpaceGame.Web;
+using TailSpin.SpaceGame.Web.Models;
+
+>>>>> master
 namespace Tests
 {
     public class DocumentDBRepository_GetItemsAsyncShould
@@ -18,9 +28,15 @@ namespace Tests
         {
             using (Stream scoresData = typeof(IDocumentDBRepository<Score>)
                 .Assembly
+<<<<< security-scan
                 .GetManifestResourceStream("Tailspin.SpaceGame.Web.SampleData.scores.json"))
             {
                 _scoreRepository = new LocalDocumentDBRepository<Score>(scoresData);
+=======
+                .GetManifestResourceStream("Tailspin.SpaceGame.Web.SampleData.scores.json"))
+            {
+                _scoreRepository = new LocalDocumentDBRepository<Score>(scoresData);
+>>>>> master
             }
         }
 
@@ -33,6 +49,7 @@ namespace Tests
         {
             const int PAGE = 0; // take the first page of results
             const int MAX_RESULTS = 10; // sample up to 10 results
+<<<<< security-scan
 
             // Form the query predicate.
             // This expression selects all scores for the provided game region.
@@ -43,6 +60,18 @@ namespace Tests
                 queryPredicate, // the predicate defined above
                 score => 1, // we don't care about the order
                 PAGE,
+=======
+
+            // Form the query predicate.
+            // This expression selects all scores for the provided game region.
+            Expression<Func<Score, bool>> queryPredicate = score => (score.GameRegion == gameRegion);
+
+            // Fetch the scores.
+            Task<IEnumerable<Score>> scoresTask = _scoreRepository.GetItemsAsync(
+                queryPredicate, // the predicate defined above
+                score => 1, // we don't care about the order
+                PAGE,
+>>>>> master
                 MAX_RESULTS
             );
             IEnumerable<Score> scores = scoresTask.Result;
