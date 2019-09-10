@@ -109,7 +109,7 @@ steps:
       eq(variables['System.PullRequest.TargetBranch'], 'master')
     )
 
-=======
+=====
 >>>>> master
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
@@ -126,7 +126,7 @@ steps:
     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
     zipAfterPublish: true
 <<<<< security-scan
-=======
+=====
 =====
 - template: templates/build.yml
   parameters:
