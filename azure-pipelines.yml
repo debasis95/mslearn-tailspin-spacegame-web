@@ -35,7 +35,6 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-<<<<< security-scan
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud analysis'
   inputs:
@@ -55,9 +54,6 @@ steps:
       eq(variables['System.PullRequest.TargetBranch'], 'master')
     )
 
-=====
-<<<<< unit-tests
->>>>> master
 - task: DotNetCoreCLI@2
   displayName: 'Build the project - $(buildConfiguration)'
   inputs:
@@ -76,11 +72,7 @@ steps:
   displayName: 'Run unit tests - $(buildConfiguration)'
   inputs:
     command: 'test'
-<<<<< security-scan
     arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura%2copencover" /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-=====
-    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
->>>>> master
     publishTestResults: true
     projects: '**/*.Tests.csproj'
 
@@ -88,7 +80,6 @@ steps:
     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
   displayName: 'Create code coverage report'
 
-<<<<< security-scan
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud code analysis'
   condition: |
@@ -109,8 +100,6 @@ steps:
       eq(variables['System.PullRequest.TargetBranch'], 'master')
     )
 
-=======
->>>>> master
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage report'
   inputs:
@@ -125,18 +114,6 @@ steps:
     publishWebProjects: false
     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
     zipAfterPublish: true
-<<<<< security-scan
-=======
-=====
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Debug'
-
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Release'
->>>>> master
->>>>> master
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
